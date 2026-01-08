@@ -1,4 +1,3 @@
-
 import streamlit as st
 from ultralytics import YOLO
 from PIL import Image
@@ -9,7 +8,7 @@ st.title("🧍 YOLO Human Pose Estimation")
 
 @st.cache_resource
 def load_model():
-    return YOLO("yolo11n-pose.pt")  # auto-download
+    return YOLO("yolo11n-pose.pt")  # auto-downloads model
 
 model = load_model()
 
@@ -18,7 +17,7 @@ uploaded_file = st.file_uploader(
     type=["jpg", "jpeg", "png"]
 )
 
-if uploaded_file:
+if uploaded_file is not None:
     image = Image.open(uploaded_file).convert("RGB")
     st.image(image, caption="Original Image", use_container_width=True)
 
@@ -27,4 +26,8 @@ if uploaded_file:
     with st.spinner("Detecting pose..."):
         results = model(img)
 
-    st.image(results[0].plot(), caption="Pose Estimation Result", use_container_width=True)
+    st.image(
+        results[0].plot(),
+        caption="Pose Estimation Result",
+        use_container_width=True
+    )
